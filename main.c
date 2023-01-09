@@ -25,13 +25,21 @@ int main(int argc, char **argv){
             strncpy(path_name, directory, strlen(directory));
             strncat(path_name, SEPARATOR, 2);
             strncat(path_name, de->d_name, strlen(de->d_name));
+            printf("TEST\n");
+            char* folder_name = get_filename(path_name);
+            if (folder_name[0] != '.'){
             if (is_dir(path_name) /*!= 0*/ == 16385){
                 //printf("%s is_directory\n", path_name);
+                printf("TEST3\n");
                 if (is_git_repo(path_name)){
+                    printf("TEST4\n");
                     printf("%s is git repo\n", path_name);
                     git_pull(path_name);
                 }
             }
+            }
+            free(folder_name);
+            printf("TEST2\n");
             free(path_name); 
         }
     }
