@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include <git2/global.h>
 #include <git2/remote.h>
 #include <git2/repository.h>
@@ -11,8 +12,23 @@ int git_init(){
     return 0;
 }
 
-bool is_git_repo(const char* path){
+bool is_git_repo_libgit2(const char* path){
     return git_repository_open_ext(NULL, path, GIT_REPOSITORY_OPEN_NO_SEARCH, NULL) == 0;
+}
+
+bool is_git_repo(const char* path){
+    struct dirent *de;
+    DIR *dr = opendir(path);
+    while ((de = readdir(dr)) != NULL){
+        if (strcmp(".", de->d_name) != 0 && strcmp("..", de->d_name) != 0 ){
+            if (strcmp(".git", de->d_name) == 0){
+                closedir(dr);
+                return true;
+            }
+        }
+    }
+    closedir(dr);
+    return false;
 }
 
 int git_pull_libgit2(const char* path){
