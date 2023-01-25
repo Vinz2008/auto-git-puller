@@ -94,6 +94,7 @@ struct config_file* parse_config_file(char* path){
         struct config_file* config_file_ptr_empty = malloc(sizeof(struct config_file));
         init_config_list(config_file_ptr_empty, 1);
         append_parameter_config_file_empty(config_file_ptr_empty, "search_folder_starting_with_point", "false");
+        append_parameter_config_file_empty(config_file_ptr_empty, "run_every_directory", "false");
         return config_file_ptr_empty;
     }
     struct config_file* config_file_ptr = malloc(sizeof(struct config_file));

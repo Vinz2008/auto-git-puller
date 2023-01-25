@@ -44,7 +44,14 @@ int main(int argc, char **argv){
     empty_config_list(config_f);
     char* directory = ".";
     for (int i = 1; i < argc; i++) {
-        directory = argv[i];
+        if (strcmp("--all-directories", argv[i]) == 0){
+            config->run_every_directory = true;
+        } else if (strcmp("--with-point-starting-folder", argv[i]) == 0) {
+            config->search_folder_starting_point = true;
+        } else {
+            directory = argv[i];
+        }
+
     }
 
     struct dirent *de;
