@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-c -g -Wall
-DESTDIR := /usr/bin
+DESTDIR := /usr
 
 ifeq ($(OS),Windows_NT)
 OUTPUTBIN = auto-git-pull.exe
@@ -34,5 +34,5 @@ clean: clean-build
 	rm -rf $(OUTPUTBIN)
 
 install:
-	cp auto-git-pull $(DESTDIR)
+	cp auto-git-pull $(DESTDIR)/bin
 
