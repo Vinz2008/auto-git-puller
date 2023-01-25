@@ -81,15 +81,19 @@ struct parameter* parse_config_line(char* line){
     return parameter_ptr;
 }
 
+void append_parameter_config_file_empty(struct config_file* config_f, const char* name, const char* value){
+    struct parameter* temp_param = malloc(sizeof(struct parameter));
+    temp_param->name = strdup(name);
+    temp_param->value_str = strdup(value);
+    append_parameter_config_list(*temp_param, config_f);
+    free(temp_param);
+}
+
 struct config_file* parse_config_file(char* path){
     if (path == NULL){
         struct config_file* config_file_ptr_empty = malloc(sizeof(struct config_file));
         init_config_list(config_file_ptr_empty, 1);
-        struct parameter* temp_param = malloc(sizeof(struct parameter));
-        temp_param->name = "search_folder_starting_with_point";
-        temp_param->value_str = "false";
-        append_parameter_config_list(*temp_param, config_file_ptr_empty);
-        free(temp_param);
+        append_parameter_config_file_empty(config_file_ptr_empty, "search_folder_starting_with_point", "false");
         return config_file_ptr_empty;
     }
     struct config_file* config_file_ptr = malloc(sizeof(struct config_file));
@@ -107,15 +111,21 @@ struct config_file* parse_config_file(char* path){
     return config_file_ptr;
 }
 
+void create_config_struct_member_bool(struct config_file* f, const char* parameter_name, bool* bool_to_set){
+    char* temp_str = f->parameters[find_parameter_pos(parameter_name, f)].value_str;
+    if (strcmp("true", temp_str) == 0){
+        *bool_to_set = true;
+    } else if (strcmp("false", temp_str) == 0){
+        *bool_to_set = false;
+    } else {
+        printf("parameter for %s isn't a boolean : %s\n",parameter_name, temp_str);
+    }
+
+}
+
 config_t* create_config(struct config_file* f){
     config_t* config = malloc(sizeof(config_t));
-    char* bool_search_folder_point_str = f->parameters[find_parameter_pos("search_folder_starting_with_point", f)].value_str;
-    if (strcmp("true", bool_search_folder_point_str) == 0){
-        config->search_folder_starting_point = true;
-    } else if (strcmp("false", bool_search_folder_point_str) == 0){
-        config->search_folder_starting_point = false;
-    } else {
-        printf("parameter for search_folder_starting_with_point isn't a boolean : %s\n", bool_search_folder_point_str);
-    }
+    create_config_struct_member_bool(f, "search_folder_starting_with_point", &config->search_folder_starting_point);
+    create_config_struct_member_bool(f, "run_every_directory", &config->run_every_directory);
     return config;
 }

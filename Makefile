@@ -1,7 +1,5 @@
 CC=gcc
 CFLAGS=-c -g -Wall
-CFLAGS += $(shell pkg-config --cflags libgit2)
-LDFLAGS=$(shell pkg-config libgit2 --libs)
 DESTDIR := /usr/bin
 
 ifeq ($(OS),Windows_NT)

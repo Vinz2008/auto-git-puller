@@ -3,6 +3,7 @@
 
 typedef struct {
     bool search_folder_starting_point;
+    bool run_every_directory;
 } config_t;
 
 struct parameter {
