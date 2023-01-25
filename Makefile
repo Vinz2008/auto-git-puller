@@ -34,5 +34,5 @@ clean: clean-build
 	rm -rf $(OUTPUTBIN)
 
 install:
-	cp auto-git-pull $(DESTDIR)/bin
+	cp auto-git-pull $(DESTDIR)/bin/
 
