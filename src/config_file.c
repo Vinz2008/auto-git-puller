@@ -34,6 +34,15 @@ int find_parameter_pos(const char* name, struct config_file* config){
     return pos;
 }
 
+bool parameter_exists(const char* name, struct config_file* config){
+    for (int i = 0; i < config->used; i++){
+        if (strcmp(name, config->parameters[i].name) == 0){
+            return true;
+        }
+    }
+    return false;
+}
+
 void init_config_list(struct config_file* config, size_t initialSize){
     config->parameters = malloc(initialSize * sizeof(struct parameter));
     config->used = 0;
@@ -96,6 +105,7 @@ struct config_file* parse_config_file(char* path){
         init_config_list(config_file_ptr_empty, 1);
         append_parameter_config_file_empty(config_file_ptr_empty, "search_folder_starting_with_point", "false");
         append_parameter_config_file_empty(config_file_ptr_empty, "run_every_directory", "false");
+        append_parameter_config_file_empty(config_file_ptr_empty, "silent_mode", "false");
         return config_file_ptr_empty;
     }
     struct config_file* config_file_ptr = malloc(sizeof(struct config_file));
@@ -113,6 +123,10 @@ struct config_file* parse_config_file(char* path){
 }
 
 void create_config_struct_member_bool(struct config_file* f, const char* parameter_name, bool* bool_to_set){
+    if (!parameter_exists(parameter_name, f)){
+        *bool_to_set = false;
+        return;
+    }
     char* temp_str = f->parameters[find_parameter_pos(parameter_name, f)].value_str;
     if (strcmp("true", temp_str) == 0){
         *bool_to_set = true;
@@ -128,5 +142,6 @@ config_t* create_config(struct config_file* f){
     config_t* config = malloc(sizeof(config_t));
     create_config_struct_member_bool(f, "search_folder_starting_with_point", &config->search_folder_starting_point);
     create_config_struct_member_bool(f, "run_every_directory", &config->run_every_directory);
+    create_config_struct_member_bool(f, "silent_mode", &config->silent_mode);
     return config;
 }

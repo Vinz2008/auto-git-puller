@@ -53,6 +53,8 @@ int main(int argc, char **argv){
             config->run_every_directory = true;
         } else if (strcmp("--with-point-starting-folder", argv[i]) == 0) {
             config->search_folder_starting_point = true;
+        } else if (strcmp("--silent", argv[i]) == 0){
+            config->silent_mode = true;
         } else {
             directory = argv[i];
         }
@@ -78,7 +80,7 @@ int main(int argc, char **argv){
                 //printf("%s is_directory\n", path_name);
                 if (is_git_repo(path_name) || config->run_every_directory == true){
                     printf("%s is git repo\n", path_name);
-                    git_pull(path_name);
+                    git_pull(path_name, config->silent_mode);
                 }
             }
             }
