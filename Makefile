@@ -13,6 +13,12 @@ OBJS = $(patsubst %.c,%.o,$(SRCS))
 
 all: $(OUTPUTBIN)
 
+release: set_release all
+
+set_release:
+	$(eval CFLAGS += 03)
+	$(eval LDFLAGS += -s)
+
 $(OUTPUTBIN): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
 

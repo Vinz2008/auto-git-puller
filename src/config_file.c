@@ -7,10 +7,8 @@
 static int removeCharFromString(char charToRemove, char *str){
 	int i,j;
 	i = 0;
-	while(i<strlen(str))
-	{
-    	if (str[i]==charToRemove)
-    	{
+	while(i<strlen(str)){
+    	if (str[i]==charToRemove){
         for (j=i; j<strlen(str); j++) {
             str[j]=str[j+1];
         }
@@ -51,14 +49,18 @@ void append_parameter_config_list(struct parameter param, struct config_file* co
 }
 
 void empty_config_list(struct config_file* config){
+    for (int i = 0; i < config->used; i++){
+        free(config->parameters[i].name);
+        free(config->parameters[i].value_str);
+    }
     free(config->parameters);
     config->parameters = NULL;
     config->used = config->size = 0;
 }
 
-struct parameter* parse_config_line(char* line){
+struct parameter parse_config_line(char* line){
     removeCharFromString('\n', line);
-    struct parameter* parameter_ptr = malloc(sizeof(struct parameter));
+    struct parameter parameter;
     bool equalFound = false;
     char* name = malloc(strlen(line) * sizeof(char));
     char* value = malloc(strlen(line) * sizeof(char));;
@@ -76,17 +78,16 @@ struct parameter* parse_config_line(char* line){
             }
         }
     }
-    parameter_ptr->name = name;
-    parameter_ptr->value_str = value;
-    return parameter_ptr;
+    parameter.name = name;
+    parameter.value_str = value;
+    return parameter;
 }
 
 void append_parameter_config_file_empty(struct config_file* config_f, const char* name, const char* value){
-    struct parameter* temp_param = malloc(sizeof(struct parameter));
-    temp_param->name = strdup(name);
-    temp_param->value_str = strdup(value);
-    append_parameter_config_list(*temp_param, config_f);
-    free(temp_param);
+    struct parameter temp_param;
+    temp_param.name = strdup(name);
+    temp_param.value_str = strdup(value);
+    append_parameter_config_list(temp_param, config_f);
 }
 
 struct config_file* parse_config_file(char* path){
@@ -103,9 +104,8 @@ struct config_file* parse_config_file(char* path){
     char* line = malloc(sizeof(char)*100);
     FILE* f = fopen(path, "r");
     while (fgets(line, 100, f) != NULL){
-        struct parameter* temp_param = parse_config_line(line);
-        append_parameter_config_list(*temp_param, config_file_ptr);
-        free(temp_param);
+        struct parameter temp_param = parse_config_line(line);
+        append_parameter_config_list(temp_param, config_file_ptr);
     }
     fclose(f);
     free(line);

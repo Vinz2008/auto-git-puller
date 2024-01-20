@@ -25,6 +25,10 @@ int main(int argc, char **argv){
     struct config_file* config_f = NULL;
     for (int i = 0; i < CONFIG_PATH_LIST_LENGTH; i++){
         if (access(config_path_list[i], F_OK) == 0){
+            if (config_f != NULL){
+                empty_config_list(config_f);
+                free(config_f);
+            }
             config_f = parse_config_file(config_path_list[i]);
             printf("Config file : %s\n", config_path_list[i]);
         }
@@ -42,6 +46,7 @@ int main(int argc, char **argv){
     }*/
     config_t* config =  create_config(config_f);
     empty_config_list(config_f);
+    free(config_f);
     char* directory = ".";
     for (int i = 1; i < argc; i++) {
         if (strcmp("--all-directories", argv[i]) == 0){
@@ -82,4 +87,5 @@ int main(int argc, char **argv){
         }
     }
     closedir(dr);
+    free(config);
 }

@@ -23,17 +23,20 @@ bool is_git_repo(const char* path){
     return false;
 }
 
+
+// TODO : add silent mode to not print the output of git pull
 int run_command(const char* command){
     FILE* cmdf = popen(command, "r");
     char c;
     while ((c = fgetc(cmdf)) != EOF){
-        putc(c, stdout);
+        putchar(c);
     }
     pclose(cmdf);
     return 0;
 }
 
 int git_pull(const char* path){
+    // TODO : add quotes to the path to accept characters like ()
     char* cmd = malloc((strlen("cd ") + strlen(path) + strlen(" && git pull") + 1) * sizeof(char));
     strcpy(cmd, "cd ");
     strncat(cmd, path, strlen(path));
