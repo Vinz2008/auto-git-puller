@@ -16,7 +16,7 @@ all: $(OUTPUTBIN)
 release: set_release all
 
 set_release:
-	$(eval CFLAGS += 03)
+	$(eval CFLAGS += -O3)
 	$(eval LDFLAGS += -s)
 
 $(OUTPUTBIN): $(OBJS)
@@ -39,3 +39,5 @@ clean: clean-build
 install:
 	cp auto-git-pull $(DESTDIR)/bin/
 
+run:
+	./auto-git-pull ~

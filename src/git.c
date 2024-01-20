@@ -36,11 +36,10 @@ int run_command(const char* command){
 }
 
 int git_pull(const char* path){
-    // TODO : add quotes to the path to accept characters like ()
-    char* cmd = malloc((strlen("cd ") + strlen(path) + strlen(" && git pull") + 1) * sizeof(char));
-    strcpy(cmd, "cd ");
+    char* cmd = malloc((strlen("cd \"") + strlen(path) + strlen("\" && git pull") + 1) * sizeof(char));
+    strcpy(cmd, "cd \"");
     strncat(cmd, path, strlen(path));
-    strncat(cmd, " && git pull", strlen(" && git pull") + 1);
+    strncat(cmd, "\" && git pull", strlen("\" && git pull") + 1);
     run_command(cmd);
     free(cmd);
     return 0;
