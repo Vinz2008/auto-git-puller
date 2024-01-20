@@ -8,11 +8,8 @@ else
 OUTPUTBIN = auto-git-pull
 endif
 
-OBJS=\
-file_util.o \
-config_file.o \
-git.o \
-main.o \
+SRCS := $(wildcard src/*.c)
+OBJS = $(patsubst %.c,%.o,$(SRCS))
 
 all: $(OUTPUTBIN)
 
@@ -24,9 +21,9 @@ $(OUTPUTBIN): $(OBJS)
 
 clean-build:
 ifeq ($(OS),Windows_NT)
-	rmdir .\*.o /s /q
+	rmdir .\src\*.o /s /q
 else
-	rm -f ./*.o
+	rm -f ./src/*.o
 endif
 
 
