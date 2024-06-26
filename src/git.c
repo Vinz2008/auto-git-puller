@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
-#include <git2/global.h>
-#include <git2/remote.h>
-#include <git2/repository.h>
-#include <git2/annotated_commit.h>
+#include <stdlib.h>
 
 
 bool is_git_repo(const char* path){

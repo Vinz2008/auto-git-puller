@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define LINE_SIZE 4096
+
 static int removeCharFromString(char charToRemove, char *str){
 	int i,j;
 	i = 0;
@@ -111,9 +113,9 @@ struct config_file* parse_config_file(char* path){
     struct config_file* config_file_ptr = malloc(sizeof(struct config_file));
     init_config_list(config_file_ptr, 1);
     config_file_ptr->path = path;
-    char* line = malloc(sizeof(char)*100);
+    char* line = malloc(sizeof(char)*LINE_SIZE);
     FILE* f = fopen(path, "r");
-    while (fgets(line, 100, f) != NULL){
+    while (fgets(line, LINE_SIZE, f) != NULL){
         struct parameter temp_param = parse_config_line(line);
         append_parameter_config_list(temp_param, config_file_ptr);
     }
